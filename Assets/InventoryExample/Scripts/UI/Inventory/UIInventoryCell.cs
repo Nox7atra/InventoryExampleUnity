@@ -37,14 +37,17 @@ public class UIInventoryCell : MonoBehaviour, IPointerClickHandler, IBeginDragHa
     
     public void OnDrop(Tuple<UIInventoryCell, BaseItem> data)
     {
-        if (this != data.Item1)
+        if (!User.Current.Inventory.IsCellHasItem(_cellID))
         {
-            User.Current.Inventory.Remove(data.Item1._cellID);
-            data.Item1.SetItem(null);
-        }
+            if (this != data.Item1)
+            {
+                User.Current.Inventory.Remove(data.Item1._cellID);
+                data.Item1.SetItem(null);
+            }
 
-        User.Current.Inventory.Add(data.Item1._cellID, data.Item2);
-        SetItem(data.Item2);
+            User.Current.Inventory.Add(_cellID, data.Item2);
+            SetItem(data.Item2);
+        }
     }
     
     public void OnBeginDrag(PointerEventData eventData)
